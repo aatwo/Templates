@@ -59,15 +59,18 @@ void MainWindow::KeyDownEvent( SDL_KeyboardEvent* event )
         {
             if( Mix_PausedMusic() )
             {
+                LOG( "Resuming music..." );
                 Mix_ResumeMusic();
             }
             else
             {
+                LOG( "Pausing music..." );
                 Mix_PauseMusic();
             }
         }
         else
         {
+            LOG( "Playing music..." );
             Mix_PlayMusic( mBackgroundMusic, -1 );
         }
     }
@@ -77,6 +80,7 @@ void MainWindow::KeyDownEvent( SDL_KeyboardEvent* event )
         if( !mSoundEffect )
             return;
 
+        LOG( "Playing sound effect..." );
         Mix_PlayChannel( -1, mSoundEffect, 0 );
     }
 }
