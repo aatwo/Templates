@@ -23,18 +23,13 @@
 ####################################################################################################
 # General info
 #
-BINARY_NAME 	    = MyAppName             # the name of your binary
-CFLAGS 			    = -I.                   # build compiler flags
-DEBUG_CFLAGS	    = -DDEBUG -g            # debug build compiler flags
-RELEASE_CFLAGS	    = -O3 -DNDEBUG          # release build compiler flags
-LIBS 			    = -lSDL2                # libs you want to link against (e.g. -lSDL2)
-BUILD_DIR_PREFIX    = build                 # The build folder prefex for all builds
-DEBUG_DIR_PREFIX    = debug                 # the debug build folder prefix
-RELEASE_DIR_PREFIX  = release               # the release build folder prefix
-SRC_DIRS		= 	. \                     # all the folders containing your source files
-					myFolder1 \
-                    myFolder2 \
-                    myFolder3
+BINARY_NAME 	    = MyApp
+CFLAGS 			    = -I.
+LIBS 			    = -lSDL2
+BUILD_DIR_PREFIX	= build
+DEBUG_DIR_PREFIX    = debug
+RELEASE_DIR_PREFIX  = release
+SRC_DIRS		    = 	.
 
 
 # You probably don't need to modify anything below this note!
@@ -53,6 +48,7 @@ OBJ_FILES 		= $(SRC_FILES:.cpp=.o)
 #
 DEBUG_BUILD_DIR = $(BUILD_DIR_PREFIX)/$(DEBUG_DIR_PREFIX)
 DEBUG_BINARY	= $(DEBUG_BUILD_DIR)/$(BINARY_NAME)
+DEBUG_CFLAGS	= -DDEBUG -g
 DEBUG_OBJ_FILES = $(addprefix $(DEBUG_BUILD_DIR)/, $(notdir $(OBJ_FILES)))
 DEBUG_DEP_FILES = $(DEBUG_OBJ_FILES:.o=.d)
 
@@ -62,6 +58,7 @@ DEBUG_DEP_FILES = $(DEBUG_OBJ_FILES:.o=.d)
 #
 RELEASE_BUILD_DIR 	= $(BUILD_DIR_PREFIX)/$(RELEASE_DIR_PREFIX)
 RELEASE_BINARY 		= $(RELEASE_BUILD_DIR)/$(BINARY_NAME)
+RELEASE_CFLAGS		= -O3 -DNDEBUG
 RELEASE_OBJ_FILES	= $(addprefix $(RELEASE_BUILD_DIR)/, $(notdir $(OBJ_FILES)))
 RELEASE_DEP_FILES 	= $(RELEASE_OBJ_FILES:.o=.d)
 
