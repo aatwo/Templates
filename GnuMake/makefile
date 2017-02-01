@@ -9,12 +9,12 @@
 #           make (builds debug by default)
 #           make debug
 #           make release
-#           make remake
 #           make all
 #
 #
 #       Simply fill out the 'General info' section below to get started. Source files are 
-#       automatically collected by searching the specified source directories.
+#       automatically collected by searching the specified source directories. Resource directories
+#		are copied to the target build folder.
 #
 #
 #
@@ -23,13 +23,14 @@
 ####################################################################################################
 # General info
 #
-BINARY_NAME 	    = MyApp
-CFLAGS 			    = -I.
+BINARY_NAME 	    = AppName
+CFLAGS 			    = -I. -std=c++11
 LIBS 			    = -lSDL2
 BUILD_DIR_PREFIX	= build
 DEBUG_DIR_PREFIX    = debug
 RELEASE_DIR_PREFIX  = release
 SRC_DIRS		    = 	.
+RESOURCE_DIRS		= Resources
 
 
 # You probably don't need to modify anything below this note!
@@ -66,7 +67,7 @@ RELEASE_DEP_FILES 	= $(RELEASE_OBJ_FILES:.o=.d)
 ####################################################################################################
 # Rules
 #
-.PHONY: all clean debug prep release remake
+.PHONY: all clean debug prep release
 all: prep debug
 
 
@@ -77,7 +78,7 @@ debug: $(DEBUG_BINARY)
 
 # Compile binary
 $(DEBUG_BINARY): $(DEBUG_OBJ_FILES)
-	$(CXX) $(CFLAGS) $(DEBUG_CFLAGS) -o $(DEBUG_BINARY) $^
+	$(CXX) $(CFLAGS) $(DEBUG_CFLAGS) -o $(DEBUG_BINARY) $^ $(LIBS)
 
 # Compile object files
 $(DEBUG_BUILD_DIR)/%.o: %.cpp
@@ -96,7 +97,7 @@ release: $(RELEASE_BINARY)
 
 # Compile binary
 $(RELEASE_BINARY): $(RELEASE_OBJ_FILES)
-	$(CXX) $(CFLAGS) $(RELEASE_CFLAGS) -o $(RELEASE_BINARY) $^
+	$(CXX) $(CFLAGS) $(RELEASE_CFLAGS) -o $(RELEASE_BINARY) $^ $(LIBS)
 
 #compile object files
 $(RELEASE_BUILD_DIR)/%.o: %.cpp
@@ -112,9 +113,9 @@ $(RELEASE_BUILD_DIR)/%.d: %.cpp
 # Other rules
 #
 prep:
-	@mkdir -p $(DEBUG_BUILD_DIR) $(RELEASE_BUILD_DIR)
-
-remake: clean all
+	mkdir -p $(DEBUG_BUILD_DIR) $(RELEASE_BUILD_DIR)
+	$(foreach RESOURCE_DIR, $(RESOURCE_DIRS), cp -R $(RESOURCE_DIR) $(DEBUG_BUILD_DIR)/$(RESOURCE_DIR))
+	$(foreach RESOURCE_DIR, $(RESOURCE_DIRS), cp -R $(RESOURCE_DIR) $(RELEASE_BUILD_DIR)/$(RESOURCE_DIR))
 
 clean:
 	rm -f $(RELEASE_BINARY) $(RELEASE_OBJ_FILES) $(RELEASE_DEP_FILES) $(DEBUG_BINARY) $(DEBUG_OBJ_FILES) $(DEBUG_DEP_FILES)
