@@ -1,0 +1,47 @@
+
+CC=g++
+CFLAGS=-I.
+DEPS= HelloWorld.h Logger.h
+OBJ = main.o HelloWorld.o Logger.o
+
+%.o: %.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+HelloWorld: $(OBJ)
+	$(CC) -o HelloWorld $(OBJ) $(CFLAGS)
+
+.PHONY: clean
+clean:
+	rm -f $(OBJ) MyApp
+
+
+
+//------------------------------------------------------------------------------------
+
+
+
+CFLAGS = -I.
+SRC = $(wildcard *.cpp) \
+	$(wildcard Logger/*.cpp)
+OBJ = $(SRC:.cpp=.o) # create list of object files from the list of source files (swapping the file extensions)
+DEP = $(OBJ:.o=.d) # one dependency file for each object file
+LIBS = -lSDL2 -lSDL2_image
+APP_NAME = MyApp
+
+$(APP_NAME): $(OBJ) # Main application. $@ is a macro for the left of the colon
+	$(CXX) -o $@ $(OBJ) $(CFLAGS) $(LIBS)
+
+-include $(DEP) # include all dependency files
+
+# Rule to generate dep files using the c preprocessor
+%.d: %.c
+	@$(CPP) $(CFLAGS) $< -MM -MT $(@:.d=.o) >$@
+
+# Clean step (phony marks this rule as outputting zero files)
+.PHONY: clean
+clean:
+	rm -f $(OBJ) $(APP_NAME)
+
+.PHONY: cleandep
+cleandep:
+	rm -f $(DEP)
