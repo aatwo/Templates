@@ -23,13 +23,13 @@
 ####################################################################################################
 # General info
 #
-BINARY_NAME 	    = AppName
-CFLAGS 			    = -I. -std=c++11
-LIBS 			    = -lSDL2
+BINARY_NAME		= AppName
+CFLAGS 			= -I. -std=c++11
+#LIBS 			= -lmyLib
 BUILD_DIR_PREFIX	= build
-DEBUG_DIR_PREFIX    = debug
-RELEASE_DIR_PREFIX  = release
-SRC_DIRS		    = 	.
+DEBUG_DIR_PREFIX	= debug
+RELEASE_DIR_PREFIX	= release
+SRC_DIRS		= .
 RESOURCE_DIRS		= Resources
 
 
